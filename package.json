@@ -1,0 +1,22 @@
+{
+  "name": "fcc-image-search-abstraction-layer",
+  "version": "1.0.0",
+  "description": "fcc-Image-Search-Abstraction-Layer",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Rumpel78/fcc-Image-Search-Abstraction-Layer.git"
+  },
+  "keywords": [
+    "fcc"
+  ],
+  "author": "Thomas Rzipa",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Rumpel78/fcc-Image-Search-Abstraction-Layer/issues"
+  },
+  "homepage": "https://github.com/Rumpel78/fcc-Image-Search-Abstraction-Layer#readme"
+}
