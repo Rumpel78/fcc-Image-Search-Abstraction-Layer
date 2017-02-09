@@ -18,5 +18,8 @@
   "bugs": {
     "url": "https://github.com/Rumpel78/fcc-Image-Search-Abstraction-Layer/issues"
   },
-  "homepage": "https://github.com/Rumpel78/fcc-Image-Search-Abstraction-Layer#readme"
+  "homepage": "https://github.com/Rumpel78/fcc-Image-Search-Abstraction-Layer#readme",
+  "dependencies": {
+    "google-ims": "^1.1.4"
+  }
 }
