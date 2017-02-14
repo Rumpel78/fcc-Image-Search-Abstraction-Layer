@@ -8,8 +8,15 @@ var googleUrl = "https://www.googleapis.com/customsearch/v1?cx="+sid+"&key="+api
 
 var app = express()
 var port = process.env.PORT || 8080;
+var requests = []
 
 app.use(express.static('public'));
+
+app.get('/api/latest/imagesearch/', function (req, res) {
+    res.setHeader('Content-Type', 'application/json')
+    var result = JSON.stringify(requests)
+    res.send(result)
+})
 
 app.get('/api/imagesearch/:search', function (req, res) {
    if(req.query.offset !== undefined){
@@ -20,11 +27,16 @@ app.get('/api/imagesearch/:search', function (req, res) {
        page = 0;
    }
    var searchString = req.params.search
+   // Add search history
+   requests.push({ term: searchString, when: new Date() });
+   if(requests.length>10){
+     requests.pop();
+   }
+   //Search
    var search= googleUrl+searchString
    if(page>0){
        search = search+"&start="+page
    }
-   console.log(search);
    request(search, function(error, response, body) {
         res.setHeader('Content-Type', 'application/json')
         var results = JSON.parse(body)
