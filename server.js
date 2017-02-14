@@ -1,15 +1,10 @@
 var express = require('express')
-const googleIms = require('google-ims');
+var https = require('https')
+var request = require("request")
 
 var api = process.env.GOOGLE_API
 var sid = process.env.GOOGLE_SID
-
-var client = googleIms(sid, api);
-
-
-var executeSearch = function(searchString, page){
-   
-}
+var googleUrl = "https://www.googleapis.com/customsearch/v1?cx="+sid+"&key="+api+"&searchType=image&num=10&q=";
 
 var app = express()
 var port = process.env.PORT || 8080;
@@ -18,29 +13,34 @@ app.use(express.static('public'));
 
 app.get('/api/imagesearch/:search', function (req, res) {
    if(req.query.offset !== undefined){
-       var page = req.query.offset / 10
+       var page = +req.query.offset+1
    }
    else
    {
        page = 0;
    }
-   console.log(page)
    var searchString = req.params.search
-   console.log(searchString);
-   client.search(req.params.search, {
-        page: page, // 10 results per page 
-    }).then(function (images) {
-        
+   var search= googleUrl+searchString
+   if(page>0){
+       search = search+"&start="+page
+   }
+   console.log(search);
+   request(search, function(error, response, body) {
         res.setHeader('Content-Type', 'application/json')
-        var resultList = [];
-        images.forEach(function(i, e, a) {
-            var result = { url: i.url }
-            resultList.push(result)
-        });
-        res.send(JSON.stringify(resultList))
-        res.end()
-        
-    });
+        var results = JSON.parse(body)
+        var responseImages = []
+        results.items.forEach(item => {
+            var result = { 
+                url: item.link,
+                snippet: item.snippet,
+                thumbnail: item.image.thumbnailLink,
+                context: item.image.contextLink
+            }
+            responseImages.push(result)
+        })
+        var resultJson = JSON.stringify(responseImages)
+        res.send(resultJson)
+   });
 })
 
 app.listen(port, function () {
