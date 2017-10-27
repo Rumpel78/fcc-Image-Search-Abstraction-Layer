@@ -8,4 +8,5 @@
 * **User Story**: I can get a list of the most recently submitted search strings.
 
 
-See the result under: <https://rumpels-fcc-isal.herokuapp.com/>
+See the result under: https://imagesearch.app.rzipa.at/  
+To take a look at the other projects go to https://app.rzipa.at
