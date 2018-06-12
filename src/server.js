@@ -14,22 +14,22 @@ app.use(express.static('public'));
 
 app.set('view engine', 'pug');
 
-app.get('/', function (req, res) {
-    var baseUrl = req.protocol + '://' + req.hostname + ':' + port;
+var mainRouter = express.Router();
+var basePath = process.env.BASEPATH || '';
+app.use(basePath, mainRouter);
 
-    var mainDomain = req.hostname.substr(req.hostname.indexOf('.') + 1);
-    var baseHome = req.protocol + '://' + mainDomain + ':' + port
-
-    res.render('index', { host: baseUrl, home: baseHome });
+mainRouter.get('/', function (req, res) {
+    var baseUrl = req.protocol + '://' + req.hostname;
+    res.render('index', { baseUrl, basePath });
 });
 
-app.get('/api/latest/imagesearch/', function (req, res) {
+mainRouter.get('/api/imagesearch/latest', function (req, res) {
     res.setHeader('Content-Type', 'application/json')
     var result = JSON.stringify(requests)
     res.send(result)
 })
 
-app.get('/api/imagesearch/:search', function (req, res) {
+mainRouter.get('/api/imagesearch/:search', function (req, res) {
     if (req.query.offset !== undefined) {
         var page = +req.query.offset + 1
     }
